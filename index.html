@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>closer: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">plans/cmd/internal/closer/closer.go (87.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package closer
+
+import (
+        "context"
+        "fmt"
+)
+
+type (
+        Releaser func(context.Context) error
+        graph    map[id]map[id]bool
+        id       int
+)
+
+type Dependency struct {
+        id       id
+        c        *Closer
+        releaser Releaser
+}
+
+type Closer struct {
+        g      graph
+        deps   map[id]*Dependency
+        nextId id
+}
+
+func (c *Closer) newDependency(r Releaser) *Dependency <span class="cov8" title="1">{
+        d := &amp;Dependency{
+                id:       c.nextId,
+                c:        c,
+                releaser: r,
+        }
+        c.nextId++
+        return d
+}</span>
+
+// Add registers a dependant resource with releaser for graceful shutdown and associated dependencies.
+func (c *Closer) Add(r Releaser, ds ...*Dependency) (*Dependency, error) <span class="cov8" title="1">{
+        const op = "instantiating dependency"
+
+        // Verify dependencies.
+        for _, d := range ds </span><span class="cov8" title="1">{
+                if d == nil </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("%s: nil dependency", op)
+                }</span>
+                <span class="cov8" title="1">if d.c != c </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("%s: dependency is not associated with canceler", op)
+                }</span>
+                <span class="cov8" title="1">if c.deps[d.id] == nil </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("%s: dependency not found", op)
+                }</span>
+        }
+
+        <span class="cov8" title="1">from := c.newDependency(r)
+        err := c.register(from, ds...)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("%s: %v", op, err)
+        }</span>
+        <span class="cov8" title="1">return from, nil</span>
+}
+
+func (c *Closer) register(from *Dependency, ds ...*Dependency) error <span class="cov8" title="1">{
+        const op = "register dependencies"
+
+        if c.g == nil </span><span class="cov8" title="1">{
+                c.g = make(graph)
+        }</span>
+        <span class="cov8" title="1">for _, to := range ds </span><span class="cov8" title="1">{
+                ok := c.g.noCycleWith(from.id, to.id)
+                if !ok </span><span class="cov0" title="0">{
+                        return fmt.Errorf("%s: cycle dependency", op)
+                }</span>
+                <span class="cov8" title="1">end := c.g[from.id]
+                if end == nil </span><span class="cov8" title="1">{
+                        end = make(map[id]bool)
+                        c.g[from.id] = end
+                }</span>
+                <span class="cov8" title="1">end[to.id] = true</span>
+        }
+
+        <span class="cov8" title="1">if c.deps == nil </span><span class="cov8" title="1">{
+                c.deps = make(map[id]*Dependency)
+        }</span>
+        <span class="cov8" title="1">c.deps[from.id] = from
+
+        return nil</span>
+}
+
+func (g graph) noCycleWith(from id, to id) (ok bool) <span class="cov8" title="1">{
+        var (
+                visited = make(map[id]bool)
+                stack   = make([]id, 0, 1)
+                curr    id
+        )
+
+        stack = append(stack, to)
+        for len(stack) &gt; 0 </span><span class="cov8" title="1">{
+                curr, stack = stack[0], stack[1:]
+                if visited[curr] </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">visited[curr] = true
+                for nodeID := range g[curr] </span><span class="cov8" title="1">{
+                        if nodeID == from </span><span class="cov0" title="0">{
+                                return false // Cycle found.
+                        }</span>
+                        <span class="cov8" title="1">if visited[nodeID] </span><span class="cov0" title="0">{
+                                continue</span> // Don't visit again.
+                        }
+                        <span class="cov8" title="1">stack = append(stack, nodeID)</span>
+                }
+        }
+
+        <span class="cov8" title="1">return true</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
