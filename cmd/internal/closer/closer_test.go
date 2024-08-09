@@ -3,12 +3,13 @@ package closer_test
 import (
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"plans/cmd/internal/closer"
 	"slices"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/asmazovec/team-agile/cmd/internal/closer"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAdd_Single_ShouldRegister(t *testing.T) {
@@ -181,9 +182,9 @@ func TestCancel_ExpireContext_ShouldStop(t *testing.T) {
 	_, _ = c.Add(r.CallOrdered(2, nil), r1)
 
 	errs := c.Close(ctx)
-	_ = <-errs
+	<-errs
 	cancel()
-	_ = <-errs
+	<-errs
 
 	assert.Error(t, ctx.Err())
 	assert.Equal(t, 1, len(r.Order))

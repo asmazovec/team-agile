@@ -4,15 +4,16 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/gorilla/mux"
-	"golang.org/x/sync/errgroup"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
-	"plans/cmd/primary-server/endpoint"
-	"plans/cmd/primary-server/middleware"
 	"time"
+
+	"github.com/asmazovec/team-agile/cmd/primary-server/endpoint"
+	"github.com/asmazovec/team-agile/cmd/primary-server/middleware"
+	"github.com/gorilla/mux"
+	"golang.org/x/sync/errgroup"
 )
 
 func main() {
