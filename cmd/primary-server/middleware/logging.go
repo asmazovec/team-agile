@@ -4,25 +4,24 @@ import (
 	"github.com/google/uuid"
 	"log/slog"
 	"net/http"
-	"plans/internal/session"
 	"time"
+
+	"github.com/asmazovec/team-agile/internal/session"
 )
 
 type logging struct {
 	h http.Handler
 	l *slog.Logger
-
-	requestID string
 }
 
 // Logging provides Logging middleware which includes logger to request context.
 func Logging(l *slog.Logger) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
-		return logging{l: l, h: h}
+		return &logging{l: l, h: h}
 	}
 }
 
-func (l logging) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (l *logging) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rid := r.Header.Get("X-Request-ID")
 	if rid == "" {
 		rid = uuid.NewString()

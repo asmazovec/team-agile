@@ -1,9 +1,10 @@
 package endpoint
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
-	"plans/internal/session"
+
+	"github.com/asmazovec/team-agile/internal/session"
+	"github.com/gorilla/mux"
 )
 
 type test struct{}
