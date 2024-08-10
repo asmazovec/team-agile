@@ -14,12 +14,8 @@ install/tools:
 		golang.org/x/vuln/cmd/govulncheck
 
 .PHONY: install
-install:
-	go install golang.org/dl/go${GO_VERSION}@latest
-	go${GO_VERSION} download
-	mkdir -p bin
-	go get ./...
-	ln -sf `go env GOPATH`/bin/go${GO_VERSION} bin/go
+install: go.sum
+	./scripts/install.sh ${GO_VERSION}
 
 .PHONY: tool/golangci-lint
 tool/golangci-lint:
