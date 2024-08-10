@@ -20,8 +20,12 @@ See also "[Approach to Manage Project Tools Versions](internal/tools/README.md)"
 Project setup works around the make build system.
 
 ```bash
-$ make install        # install go with current versions
-$ make install/tools  # install go tools
+# common approach
+$ make install/dev    # installs go, dependencies and tools 
+
+# additional options
+$ make install        # install project with go and dependencies
+$ make install/tools  # install project tools
 ```
 
 ## Lint check
@@ -30,11 +34,5 @@ The project's source code should follow the restrictions and code style conventi
 The following commands allow you to perform automated verification with static check analysis and alert you to some code vulnerabilities.
 
 ```bash
-# main verification shortcut
 $ make lint
-
-# additional options
-$ make tool/golangci-lint
-$ make tool/vet
-$ make tool/govulncheck
 ```
