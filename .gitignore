@@ -1,8 +1,9 @@
 # Building
 bin/
-build/
 tmp/
 vendor/
+
+coverage.txt
 
 
 ## ---- Go ----

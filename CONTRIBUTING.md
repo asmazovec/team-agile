@@ -36,3 +36,12 @@ The following commands allow you to perform automated verification with static c
 ```bash
 $ make lint
 ```
+
+## Tests
+
+Run tests with correct flags and check coverage Run tests with correct flags and check coverage these commands are used.
+
+```bash
+$ make test          # generate statistics for tests and coverage
+$ make docs/coverage # generate coverage info docs
+```
