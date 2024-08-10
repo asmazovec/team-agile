@@ -3,7 +3,7 @@
 GO_VERSION=$1
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-source $SCRIPT_DIR"/prompt.sh"
+source "$SCRIPT_DIR/prompt.sh"
 
 # See CONTRIBUTING.md for details
 echo `prompt "Getting Go SDK"`

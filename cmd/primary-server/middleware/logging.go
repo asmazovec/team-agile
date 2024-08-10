@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"github.com/google/uuid"
 	"log/slog"
 	"net/http"
-	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/asmazovec/team-agile/internal/session"
 )
@@ -32,11 +32,9 @@ func (l *logging) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ridLog := slog.String("request-id", rid)
 	l.l = l.l.With(urlLog, ridLog, methodLog)
 
-	r = r.WithContext(session.WithRequestId(r.Context(), rid))
+	r = r.WithContext(session.WithRequestID(r.Context(), rid))
 	r = r.WithContext(session.WithLogger(r.Context(), l.l))
 
 	l.l.Info("Request")
 	l.h.ServeHTTP(w, r)
-	time.Sleep(10 * time.Second)
-	l.l.Info("Done very long :)")
 }

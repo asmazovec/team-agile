@@ -1,9 +1,8 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-source $SCRIPT_DIR"/prompt.sh"
+source "$SCRIPT_DIR/prompt.sh"
 
-# Enable direnv utility
 # See CONTRIBUTING.md for details
 if ! command -v direnv &> /dev/null
 then
@@ -12,7 +11,7 @@ else
   direnv allow
 fi
 
-prompt "Installing tools"
+prompt "Restoring tools packages"
 
 cd internal/tools
 go mod tidy
