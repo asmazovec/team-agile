@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/asmazovec/team-agile/cmd/internal/closer"
+	"github.com/asmazovec/team-agile/internal/closer"
 	"github.com/stretchr/testify/assert"
 )
 
