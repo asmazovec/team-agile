@@ -1,37 +1,26 @@
-.DEFAULT_GOAL = test
+.DEFAULT_GOAL = install
 .PHONY: FORCE
+PROJ_DIR="$(dirname "$(readlink -f "$0")")"
 
 export GOPROXY = https://proxy.golang.org
 export GO_VERSION = 1.22.5
 
 .PHONY: lint
-lint: install/tools tool/golangci-lint tool/govulncheck tool/vet
-
-.PHONY: install/tools
-install/tools:
-	go install -C internal/tools \
-		github.com/golangci/golangci-lint/cmd/golangci-lint \
-		golang.org/x/vuln/cmd/govulncheck
+lint: install/tools
+	./scripts/lint.sh
 
 .PHONY: install
 install: go.sum
 	./scripts/install.sh ${GO_VERSION}
 
-.PHONY: tool/golangci-lint
-tool/golangci-lint:
-	golangci-lint run
+.PHONY: install/dev
+install/dev: install install/tools
 
-.PHONY: tool/govulncheck
-tool/govulncheck:
-	govulncheck ./...
-
-.PHONY: tool/vet
-tool/vet:
-	go vet ./...
+.PHONY: install/tools
+install/tools:
+	./scripts/tools.sh
 
 go.mod: FORCE
-	go mod tidy
-	go mod verify
+	./scripts/restore.sh
 
 go.sum: go.mod
-
