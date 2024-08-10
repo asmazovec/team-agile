@@ -16,12 +16,16 @@ lint: install/tools
 install: go.sum
 	./scripts/install.sh ${GO_VERSION}
 
+.PHONY: install/tools
+install/tools: install
+	./scripts/tools.sh
+
 .PHONY: install/dev
 install/dev: install install/tools
-
-.PHONY: install/tools
-install/tools:
-	./scripts/tools.sh
+	go install -C internal/tools \
+		github.com/golangci/golangci-lint/cmd/golangci-lint \
+		golang.org/x/tools/cmd/goimports \
+		golang.org/x/vuln/cmd/govulncheck
 
 .PHONY: test
 test:

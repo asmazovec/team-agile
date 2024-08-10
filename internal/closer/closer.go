@@ -95,7 +95,7 @@ func (g graph) Release(ctx context.Context, workers int, deps <-chan *Dependency
 	}
 
 	wg.Add(workers)
-	for i := 0; i < workers; i++ {
+	for range workers {
 		go release()
 	}
 	go func() {
@@ -126,7 +126,8 @@ func (g graph) Layer(ctx context.Context) (<-chan *Dependency, int) {
 	return ch, len(deps)
 }
 
-func (g graph) topologicalLayer() (top []*Dependency, ok bool) {
+func (g graph) topologicalLayer() ([]*Dependency, bool) {
+	var top []*Dependency
 	if len(g) == 0 {
 		return nil, false
 	}

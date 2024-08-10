@@ -4,13 +4,13 @@ import (
 	"context"
 )
 
-// WithRequestId carries new context with rid request id.
-func WithRequestId(ctx context.Context, rid string) context.Context {
-	return context.WithValue(ctx, requestIdKey, rid)
+// WithRequestID carries new context with rid request id.
+func WithRequestID(ctx context.Context, rid string) context.Context {
+	return context.WithValue(ctx, requestIDKey, rid)
 }
 
-// RequestIdFromContext gets request id from context.
-func RequestIdFromContext(ctx context.Context) (string, bool) {
-	rid, ok := ctx.Value(requestIdKey).(string)
+// RequestIDFromContext gets request id from context.
+func RequestIDFromContext(ctx context.Context) (string, bool) {
+	rid, ok := ctx.Value(requestIDKey).(string)
 	return rid, ok
 }

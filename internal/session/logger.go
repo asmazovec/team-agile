@@ -12,6 +12,9 @@ func WithLogger(ctx context.Context, l *slog.Logger) context.Context {
 
 // MustLoggerFromContext gets session slog.Logger from context.
 func MustLoggerFromContext(ctx context.Context) *slog.Logger {
-	logger := ctx.Value(loggingKey).(*slog.Logger)
+	logger, ok := ctx.Value(loggingKey).(*slog.Logger)
+	if !ok {
+		panic("session: logger not found in context")
+	}
 	return logger
 }
