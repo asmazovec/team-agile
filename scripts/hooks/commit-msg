@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+PATTERN="qr/^\(#(?<issue>[0-9]+)\)[[:blank:]](?<message>[A-Z](?:[[:graph:]]|[[:blank:]])*?)\s*(?:\n\s*(?<comment>(?:.|\s)*))?$/p"
+MSG="$(cat "$1")"
+ERR="The commit message is incorrect. See details on ./docs/branching.md#Commits..."
+
+if ! perl -le 'if ( <STDIN> =~ '"$PATTERN"' ) { exit 0; } else { exit 1; }' <<< "$MSG"; then echo "$ERR"; exit 1; fi

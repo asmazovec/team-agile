@@ -1,7 +1,9 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-source "$SCRIPT_DIR/prompt.sh"
+PROJ_DIR=$1
+cd "$PROJ_DIR" || exit 1
+
+source ./scripts/prompt.sh
 
 prompt "Restoring packages"
 
