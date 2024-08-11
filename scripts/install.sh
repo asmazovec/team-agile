@@ -1,17 +1,19 @@
 #!/bin/sh
 
-GO_VERSION=$1
+PROJ_DIR=$1
+cd "$PROJ_DIR" || exit
 
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-source "$SCRIPT_DIR/prompt.sh"
+source ./scripts/prompt.sh
+
+GO_VERSION=$2
 
 # See CONTRIBUTING.md for details
-echo `prompt "Getting Go SDK"`
+prompt "Getting Go SDK"
 
-go install golang.org/dl/go${GO_VERSION}@latest
-go${GO_VERSION} download
+go install "golang.org/dl/go$GO_VERSION@latest"
+go"$GO_VERSION" download
 mkdir -p bin
 go get ./...
-ln -sf `go env GOPATH`/bin/go${GO_VERSION} bin/go
+ln -sf "$(go env GOPATH)/bin/go$GO_VERSION" bin/go
 
 end

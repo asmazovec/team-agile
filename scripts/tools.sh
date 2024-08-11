@@ -1,7 +1,9 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-source "$SCRIPT_DIR/prompt.sh"
+PROJ_DIR=$1
+cd "$PROJ_DIR" || exit 1
+
+source ./scripts/prompt.sh
 
 # See CONTRIBUTING.md for details
 if ! command -v direnv &> /dev/null
@@ -13,7 +15,7 @@ fi
 
 prompt "Restoring tools packages"
 
-cd internal/tools
+cd ./internal/tools || exit 1
 go mod tidy
 go mod verify
 
