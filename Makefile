@@ -1,11 +1,18 @@
 .DEFAULT_GOAL = install
 .PHONY: FORCE
 
-MAKEFILE := $(abspath $(lastword $(MAKEFILE_LIST)))
-PROJ_DIR := $(patsubst %/,%,$(dir $(MAKEFILE)))
 export GOPROXY = https://proxy.golang.org
 export GO_VERSION = 1.22.5
 
+MAKEFILE := $(abspath $(lastword $(MAKEFILE_LIST)))
+PROJ_DIR := $(patsubst %/,%,$(dir $(MAKEFILE)))
+
+TEST_SKIP := /cmd/
+TEST_DIRS := $$(go list ${PROJ_DIR}/... | grep -v ${TEST_SKIP})
+TEST_OPTS := -shuffle=on -race -covermode=atomic -coverprofile=${TEST_COVER_OUT}
+
+TEST_COVER_OUT := ${PROJ_DIR}/docs/coverage.txt
+TEST_COVER_CMD := go tool cover
 
 ######### Actions #########
 
@@ -31,7 +38,11 @@ lint:
 
 .PHONY: test
 test:
-	go test -v -shuffle=on -race -coverprofile=${PROJ_DIR}/docs/coverage.txt -covermode=atomic `go list ${PROJ_DIR}/... | grep -v /cmd/`
+	go test ${TEST_OPTS} ${TEST_DIRS}
+
+.PHONY:
+test/coverage:
+	go tool cover -func=${TEST_COVER_OUT}
 
 .PHONY: docs/coverage.html
 docs/coverage: docs/coverage.html
@@ -40,7 +51,7 @@ docs/coverage: docs/coverage.html
 ######### Static #########
 
 docs/coverage.html:
-	go tool cover -html ${PROJ_DIR}/docs/coverage.txt -o ${PROJ_DIR}/docs/coverage.html
+	${TEST_COVER_CMD} -html ${PROJ_DIR}/docs/coverage.txt -o ${PROJ_DIR}/docs/coverage.html
 
 docs/:
 	mkdir -p docs
