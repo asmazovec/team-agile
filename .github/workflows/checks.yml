@@ -20,7 +20,6 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ vars.GO_VERSION }}
-      - run: make install/tools
 
       - name: lint check
         uses: golangci/golangci-lint-action@v6
@@ -29,6 +28,8 @@ jobs:
           only-new-issues: true
 
   security:
+    permissions:
+      security-events: write
     name: Go vulnerabilities check
     runs-on: ubuntu-latest
     steps:
@@ -36,12 +37,12 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ vars.GO_VERSION }}
-      - run: make install/tools
 
       - name: check for vulnerabilities
-        uses: golang/govulncheck-action@v1
+        uses: Templum/govulncheck-action@v1.0.0
         with:
-          go-version-input: $${{ vars.GO_VERSION }}
+          go-version: $${{ vars.GO_VERSION }}
+          vulncheck-version: $${{ vars.GOVULNCHECK_VERSION }}
 
   test:
     name: Go test coverage check
@@ -51,7 +52,6 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ vars.GO_VERSION }}
-      - run: make install/tools
 
       - name: generate test coverage
         run: make check/test
