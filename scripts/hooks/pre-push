@@ -31,12 +31,14 @@ do
 	fi
 done
 
-LINT_ERR="Lint check failure with errors. Run make lint for details..."
-if ! make lint &> /dev/null; then echo "$LINT_ERR"; exit 1; fi
+LINT_ERR="Lint check failure with errors. Run make check/lint for details..."
+if ! make check/lint &> /dev/null; then echo "$LINT_ERR"; exit 1; fi
 
-TEST_ERR="Failure to test. Run make test for details..."
-if ! make test &> /dev/null; then echo "$TEST_ERR"; exit 1; fi
+SECURITY_ERR="Source code consists of secure vulnerabilities. Run make check/security for details..."
+if ! make check/security &> /dev/null; then echo "$SECURITY_ERR"; exit 1; fi
 
-COVERAGE=$(make test/coverage | tail -1 | awk '{print $3}' | sed s/%//)
-COVERAGE_ERR="Current total tests coverage is $COVERAGE%, must be greater than ${COVERAGE_LEVEL:=80}%. Run make test/coverage for details..."
-if [[ "$COVERAGE" < "$COVERAGE_LEVEL"  ]]; then echo "$COVERAGE_ERR"; exit 1; fi
+TEST_ERR="Failure to test. Run make check/test for details..."
+if ! make check/test &> /dev/null; then echo "$TEST_ERR"; exit 1; fi
+
+TEST_COVERAGE_ERR="Coverage threshold not satisfied. Run make check/coverage for details..."
+if ! make check/coverage &> /dev/null; then echo "$TEST_COVERAGE_ERR"; exit 1; fi
