@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 PROJ_DIR=$1
-cd "$PROJ_DIR" || exit
+cd "$PROJ_DIR" || exit 1
 
 source ./scripts/prompt.sh
 
