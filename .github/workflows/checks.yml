@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ vars.GO_VERSION }}
       - run: make install/tools
 
       - name: lint check
@@ -30,18 +33,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ vars.GO_VERSION }}
       - run: make install/tools
 
       - name: check for vulnerabilities
         uses: golang/govulncheck-action@v1
         with:
-          go-version-file: $${{ vars.GO_MODULE }}
+          go-version-input: $${{ vars.GO_VERSION }}
 
   test:
     name: Go test coverage check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ vars.GO_VERSION }}
       - run: make install/tools
 
       - name: generate test coverage
