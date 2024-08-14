@@ -9,7 +9,8 @@ It lets tools keep their versions over a time for deterministic and stable build
 
 ## Adding new tools as dependencies
 
-To add new tool as dependency:
-1. Append package link into [tools.go](./tools.go).
-2. Run `make install/tools` to perform tools installing.
+To add a new tool as dependency:
+1. Append [tools.go](./tools.go) with a tool link url.
+2. [_Optional_] Add `go install` script for current tool in `Makefile`.
+3. Run `make install/tools` to perform tools installing.
  

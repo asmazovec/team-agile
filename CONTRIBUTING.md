@@ -21,20 +21,21 @@ Project setup works around the make build system.
 
 ```bash
 # common approach
-$ make install/dev    # installs go, dependencies and tools 
+$ make install/dev    # prepare project for development
 
-# additional options
+# additional options (included in common approach)
 $ make install        # install project with go and dependencies
 $ make install/tools  # install project tools
 ```
 
-## Lint check
+## Checks
 
 The project's source code should follow the restrictions and code style conventions established for this project.
 The following commands allow you to perform automated verification with static check analysis and alert you to some code vulnerabilities.
 
 ```bash
-$ make lint
+$ make check/lint     # check for code style and whatever static checks
+$ make check/security # check for security vulnerabilities
 ```
 
 ## Tests
@@ -42,6 +43,7 @@ $ make lint
 Run tests with correct flags and check coverage Run tests with correct flags and check coverage these commands are used.
 
 ```bash
-$ make test          # generate statistics for tests and coverage
-$ make docs/coverage # generate coverage info docs
+$ make check/test         # run tests, also generates coverage profile along the project.
+$ make check/coverage     # check for satisfying test coverage thresholds
+$ make docs/coverage.html # generate coverage info docs
 ```

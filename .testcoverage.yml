@@ -1,0 +1,14 @@
+# https://github.com/marketplace/actions/go-test-coverage
+
+profile: docs/coverage.txt
+local-prefix: "github.com/asmazovec/team-agile"
+
+threshold:
+  file: 70
+  package: 80
+  total: 95
+
+exclude:
+  paths:
+    - \.pb\.go$
+    - vendor
