@@ -3,6 +3,7 @@ package closer
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"sync"
 )
 
@@ -15,6 +16,18 @@ type (
 // User out of this package should be never able to release Dependency manually.
 type Dependency struct {
 	releaser Releaser
+}
+
+// ReleaserWithLog wrap releaser function with log message.
+func ReleaserWithLog(log *slog.Logger, msg string, r Releaser) Releaser {
+	return func(ctx context.Context) error {
+		if r == nil {
+			return nil
+		}
+		err := r(ctx)
+		log.Info(msg)
+		return err
+	}
 }
 
 // Closer is a closer pattern for graceful shutdown.
