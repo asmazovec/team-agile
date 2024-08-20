@@ -3,6 +3,7 @@ package closer_test
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"slices"
 	"sync"
 	"testing"
@@ -230,4 +231,43 @@ func TestCancel_GraphWithErrorCall_ShouldAddToErrorsMsg(t *testing.T) {
 		}
 	}
 	assert.Equal(t, 3, errCount)
+}
+
+type LogHandlerMock struct {
+	called bool
+}
+
+func (lhm *LogHandlerMock) Enabled(context.Context, slog.Level) bool  { return true }
+func (lhm *LogHandlerMock) Handle(context.Context, slog.Record) error { lhm.called = true; return nil }
+func (lhm *LogHandlerMock) WithAttrs([]slog.Attr) slog.Handler        { return lhm }
+func (lhm *LogHandlerMock) WithGroup(string) slog.Handler             { return lhm }
+
+func TestReleaserWithLog_ShouldCallLog(t *testing.T) {
+	h := &LogHandlerMock{}
+	l := slog.New(h)
+	r := closer.ReleaserWithLog(l, "", func(context.Context) error { return nil })
+
+	_ = r(nil)
+
+	assert.True(t, h.called)
+}
+
+func TestReleaserWithLog_CallNilReleaser_ShouldNotPanic(t *testing.T) {
+	h := &LogHandlerMock{}
+	l := slog.New(h)
+	r := closer.ReleaserWithLog(l, "", nil)
+	assert.NotPanics(t, func() {
+		_ = r(nil)
+	})
+}
+
+func TestReleaserWithLog_ShouldCallOriginalReleaser(t *testing.T) {
+	h := &LogHandlerMock{}
+	l := slog.New(h)
+	res := &ResourceMock{}
+	r := closer.ReleaserWithLog(l, "", res.CallOrdered(0, nil))
+
+	_ = r(nil)
+
+	assert.Len(t, res.Order, 1)
 }
