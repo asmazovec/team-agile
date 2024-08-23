@@ -1,0 +1,39 @@
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  add-to-project:
+    name: Add issue to project board
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add to Project Board
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: ${{ vars.DEFAULT_PROJECT_URL }}
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+  auto-assign:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - name: Auto-assign issue
+      uses: pozil/auto-assign-issue@v2
+      with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ vars.DEFAULT_ASSIGNEES }}
+          numOfAssignee: ${{ vars.DEFAULT_ASSIGNEES_COUNT }}
+
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - name: First interaction greetings
+      uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: ${{ vars.GREETING_ISSUE }}
+        pr-message: ${{ vars.GREETING_PR }}
