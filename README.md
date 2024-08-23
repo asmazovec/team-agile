@@ -1,5 +1,9 @@
 # Team-agile
 
+![coverage](https://raw.githubusercontent.com/asmazovec/team-agile/badges/.badges/main/coverage.svg)
+
+---
+
 Team-agile provides an API for managing team tasks.
 
 ## Reasons
