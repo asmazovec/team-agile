@@ -1,12 +1,8 @@
-# Team-agile
-
-![coverage](https://raw.githubusercontent.com/asmazovec/team-agile/badges/.badges/main/coverage.svg)
-
----
+# Team-agile ![GitHub License](https://img.shields.io/github/license/asmazovec/team-agile?color=blue) ![CI status](https://img.shields.io/github/actions/workflow/status/asmazovec/team-agile/checks.yml?branch=main&logo=github&label=CI) ![coverage](https://raw.githubusercontent.com/asmazovec/team-agile/badges/.badges/main/coverage.svg) ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-raw/asmazovec/team-agile?link=https%3A%2F%2Fgithub.com%2Fusers%2Fasmazovec%2Fprojects%2F1)
 
 Team-agile provides an API for managing team tasks.
 
-## Reasons
+## Reasons 
 
 This project was started for:
 
