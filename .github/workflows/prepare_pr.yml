@@ -15,7 +15,8 @@ jobs:
           project-url: ${{ vars.DEFAULT_PROJECT_URL }}
           github-token: ${{ secrets.PROJECT_TOKEN }}
 
-  auto-assign:
+  auto-assign-pr:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -25,8 +26,8 @@ jobs:
       uses: pozil/auto-assign-issue@v2
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: ${{ vars.DEFAULT_ASSIGNEES }}
-          numOfAssignee: ${{ vars.DEFAULT_ASSIGNEES_COUNT }}
+          assignees: ${{ vars.DEFAULT_PR_ASSIGNEES }}
+          numOfAssignee: ${{ vars.DEFAULT_PR_ASSIGNEES_COUNT }}
 
   greeting:
     runs-on: ubuntu-latest
