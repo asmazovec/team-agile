@@ -45,6 +45,7 @@ jobs:
           vulncheck-version: ${{ vars.GOVULNCHECK_VERSION }}
 
   test:
+    permissions: write-all
     name: Go test coverage check
     runs-on: ubuntu-latest
     steps:
