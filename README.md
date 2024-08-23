@@ -21,4 +21,4 @@ Please explore some [suggestions](docs/CONTRIBUTING.md) if you would like to con
 
 Released under the terms of the MIT License.
 
-Copyright (c) 2024 Mazovec Alexander and Contributors
+Copyright (c) 2024 Mazovec Alexander and Contributors.
