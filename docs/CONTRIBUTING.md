@@ -12,8 +12,13 @@ To contribute to this project, your system should be prepared with some utilitie
 
 **recommended**
 - `direnv` https://direnv.net/ - lets establish project-specific environment variable separately from the operating system. 
-See also "[Approach to Manage Project Tools Versions](internal/tools/README.md)".
+See also "[Approach to Manage Project Tools Versions](../internal/tools/README.md)".
 
+## Branching
+
+Rebase flow is preferred for the project.
+
+Please, check out [branching.md](branching.md) for details.
 
 ## Setup project for developing
 
