@@ -9,6 +9,12 @@ This project was started for:
 - Hobby/pet project. It's a place for my experiments outside my day job.
 - Education. I explore and practice Go for Web technologies there.
 
+## Install Release
+
+```bash
+docker
+```
+
 ## Contribute
 
 I hope you're as excited about Go as I am, so you're welcome to collaborate, chat about technology, or discuss the wonders of Go!
