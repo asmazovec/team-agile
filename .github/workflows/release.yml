@@ -134,8 +134,9 @@ jobs:
             type=semver,pattern=v{{major}},value=${{ env.VERSION }}
           labels: |
             org.opencontainers.image.title=${{ matrix.image }}
-            org.opencontainers.image.description=${{ needs.release.outputs.body }}
+            org.opencontainers.image.description=${{ matrix.description }}
             org.opencontainers.image.vendor=${{ env.PUBLISHER }}
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
 
       - name: Build and push Docker image
         id: push
@@ -150,6 +151,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ matrix.image }}
+          subject-name: ${{ env.REGISTRY }}/${{ github.repository }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
