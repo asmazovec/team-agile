@@ -48,7 +48,6 @@ jobs:
         run: |
           ${{ needs.on-minor.result == 'success' }} && VERSION=${{ needs.on-minor.outputs.version }}
           ${{ needs.on-patch.result == 'success' }} && VERSION=${{ needs.on-patch.outputs.version }}
-          echo "${VERSION:='v0.0.0'}"
           echo "version=${VERSION:='v0.0.0'}" >> "$GITHUB_OUTPUT"
 
   release:
