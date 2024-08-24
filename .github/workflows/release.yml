@@ -9,13 +9,6 @@ env:
   PUBLISHER: ${{ vars.PUBLISHER }}
 
 jobs:
-  info:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ toJSON(github.event.pull_request) }}
-          echo ${{ github.head_ref }}
-
   on-minor:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged && startsWith(github.head_ref, 'develop')
@@ -47,7 +40,7 @@ jobs:
   version:
     runs-on: ubuntu-latest
     needs: [on-minor, on-patch]
-    if: needs.on-minor.result == 'success' || needs.on-patch.result == 'success'
+    if: ${{ needs.on-minor.result == 'success' || needs.on-patch.result == 'success' }}
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -81,13 +74,23 @@ jobs:
           tag_name: ${{ needs.version.outputs.version }}
           body: ${{ steps.build_changelog.outputs.changelog }}
 
+  deploy-matix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        env:
+          # { "include": [ { "image": "primary-server" }, ... ] }
+          IMAGES_MATRIX: '${{ vars.IMAGES_MATRIX }}'
+        run: echo "matrix=$IMAGES_MATRIX" >> "$GITHUB_OUTPUT"
+
   deploy-docker-image:
     name: Deploy ${{ matrix.image }} image
     runs-on: ubuntu-latest
-    needs: [version, release]
+    needs: [version, release, deploy-matrix]
     strategy:
-      matrix: ${{ fromJSON(vars.IMAGES_MATRIX) }}
-      # { "include": [ { "image": "primary-server" }, ... ] }
+      matrix: ${{ fromJSON(needs.deploy-matrix.outputs.matrix) }}
     permissions:
       contents: read
       packages: write
