@@ -100,7 +100,10 @@ jobs:
     if: ${{ !failure() && !cancelled() }}
     needs: [version, release, deploy-matrix]
     strategy:
-      matrix: ${{ fromJSON(needs.deploy-matrix.outputs.matrix) }}
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.deploy-matrix.outputs.matrix) }}
+
     permissions:
       contents: read
       packages: write
