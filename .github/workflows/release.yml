@@ -9,6 +9,15 @@ env:
   PUBLISHER: ${{ vars.PUBLISHER }}
 
 jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ github.events.pull_request.merged }}
+          echo ${{ github.head_ref }}
+          ${{ startsWith(github.head_ref, 'refs/heads/develop') }} && echo 'minor version'
+          ${{ startsWith(github.head_ref, 'refs/heads/hotfix') }} && echo 'patch version'
+
   on-minor:
     runs-on: ubuntu-latest
     if: github.events.pull_request.merged && startsWith(github.head_ref, 'refs/heads/develop')
