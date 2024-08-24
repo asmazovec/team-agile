@@ -1,0 +1,7 @@
+services:
+  primary-server:
+    build:
+      context: .
+      dockerfile: build/primary-server/Dockerfile
+    ports:
+      - 8080:8080
