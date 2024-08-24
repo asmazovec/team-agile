@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{ github.events.pull_request }}
+          echo ${{ toJSON(github.events.pull_request) }}
           echo ${{ github.head_ref }}
 
   on-minor:
