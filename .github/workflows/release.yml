@@ -104,11 +104,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ matrix.image }}
           tags: |
-            type=semver,pattern={{raw}},value=${{ VERSION }}
-            type=semver,pattern={{version}},value=${{ VERSION }}
-            type=semver,pattern=v{{major}}.{{minor}},value${{ VERSION }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ VERSION }}
-            type=semver,pattern=v{{major}},value=${{ VERSION }}
+            type=semver,pattern={{raw}},value=${{ env.VERSION }}
+            type=semver,pattern={{version}},value=${{ env.VERSION }}
+            type=semver,pattern=v{{major}}.{{minor}},value${{ env.VERSION }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ env.VERSION }}
+            type=semver,pattern=v{{major}},value=${{ env.VERSION }}
           labels: |
             org.opencontainers.image.title=${{ matrix.image }}
             org.opencontainers.image.description=${{ needs.release.outputs.body }}
