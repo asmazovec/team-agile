@@ -90,10 +90,9 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        env:
-          # { "include": [ { "image": "primary-server" }, ... ] }
-          IMAGES_MATRIX: ${{ vars.IMAGES_MATRIX }}
-        run: echo "matrix='${{ env.IMAGES_MATRIX }}'" >> "$GITHUB_OUTPUT"
+        uses: fabiocaccamo/create-matrix-action@v4
+        with:
+          matrix: ${{ env.IMAGES_MATRIX }}
 
   deploy-docker-image:
     name: Deploy ${{ matrix.image }} image
