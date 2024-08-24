@@ -92,7 +92,7 @@ jobs:
       - id: set-matrix
         uses: fabiocaccamo/create-matrix-action@v4
         with:
-          matrix: ${{ env.IMAGES_MATRIX }}
+          matrix: ${{ vars.IMAGES_MATRIX }}
 
   deploy-docker-image:
     name: Deploy ${{ matrix.image }} image
