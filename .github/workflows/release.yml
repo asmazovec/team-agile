@@ -125,11 +125,11 @@ jobs:
         env:
           VERSION: ${{ needs.version.outputs.version }}
         with:
-          images: ${{ env.REGISTRY }}/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
           tags: |
             type=semver,pattern={{raw}},value=${{ env.VERSION }}
             type=semver,pattern={{version}},value=${{ env.VERSION }}
-            type=semver,pattern=v{{major}}.{{minor}},value${{ env.VERSION }}
+            type=semver,pattern=v{{major}}.{{minor}},value=${{ env.VERSION }}
             type=semver,pattern={{major}}.{{minor}},value=${{ env.VERSION }}
             type=semver,pattern=v{{major}},value=${{ env.VERSION }}
           labels: |
