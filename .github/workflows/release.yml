@@ -74,7 +74,7 @@ jobs:
           tag_name: ${{ needs.version.outputs.version }}
           body: ${{ steps.build_changelog.outputs.changelog }}
 
-  deploy-matix:
+  deploy-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
