@@ -39,8 +39,8 @@ jobs:
 
   version:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs: [on-minor, on-patch]
-    if: ${{ needs.on-minor.result == 'success' || needs.on-patch.result == 'success' }}
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -82,8 +82,8 @@ jobs:
       - id: set-matrix
         env:
           # { "include": [ { "image": "primary-server" }, ... ] }
-          IMAGES_MATRIX: '${{ vars.IMAGES_MATRIX }}'
-        run: echo "matrix=$IMAGES_MATRIX" >> "$GITHUB_OUTPUT"
+          IMAGES_MATRIX: ${{ vars.IMAGES_MATRIX }}
+        run: echo "matrix='${{ env.IMAGES_MATRIX }}'" >> "$GITHUB_OUTPUT"
 
   deploy-docker-image:
     name: Deploy ${{ matrix.image }} image
