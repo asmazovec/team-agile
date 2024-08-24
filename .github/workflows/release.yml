@@ -7,6 +7,7 @@ env:
   REGISTRY: ${{ vars.REGISTRY }}
   REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   PUBLISHER: ${{ vars.PUBLISHER }}
+  PUBLISHER_EMAIL: ${{ vars.PUBLISHER_EMAIL }}
 
 jobs:
   on-minor:
@@ -60,6 +61,23 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: '${{ needs.version.outputs.version }}',
+              message: 'Release ${{ needs.version.outputs.version }}',
+              object: context.sha,
+              type: 'commit',
+              tagger: {
+                name: ${{ env.PUBLISHER }},
+                name: ${{ env.PUBLISHER_EMAIL }}
+              }
+            })
 
       - name: Build Changelog
         id: build_changelog
