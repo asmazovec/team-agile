@@ -39,7 +39,7 @@ jobs:
 
   version:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: always() && (needs.on-minor.result == 'success' || needs.on-patch.result == 'success')
     needs: [on-minor, on-patch]
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -53,6 +53,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: ${{ !failure() && !cancelled() }}
     needs: [version]
     outputs:
       body: ${{ steps.build_changelog.outputs.changelog }}
@@ -89,6 +90,7 @@ jobs:
   deploy-docker-image:
     name: Deploy ${{ matrix.image }} image
     runs-on: ubuntu-latest
+    if: ${{ !failure() && !cancelled() }}
     needs: [version, release, deploy-matrix]
     strategy:
       matrix: ${{ fromJSON(needs.deploy-matrix.outputs.matrix) }}
