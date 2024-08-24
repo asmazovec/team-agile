@@ -11,7 +11,7 @@ env:
 jobs:
   on-minor:
     runs-on: ubuntu-latest
-    if: github.events.pull_request.merged && startsWith(github.head_ref, 'develop')
+    if: github.events.pull_request.merged && startsWith(github.head_ref, 'refs/heads/develop')
     outputs:
       version: ${{ steps.version.outputs.v-version }}
     steps:
@@ -25,7 +25,7 @@ jobs:
 
   on-patch:
     runs-on: ubuntu-latest
-    if: github.events.pull_request.merged && startsWith(github.head_ref, 'hotfix')
+    if: github.events.pull_request.merged && startsWith(github.head_ref, 'refs/heads/hotfix')
     outputs:
       version: ${{ steps.version.outputs.v-version }}
     steps:
