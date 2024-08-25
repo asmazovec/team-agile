@@ -40,6 +40,7 @@ install/tools: install
 
 .PHONY: install/dev
 install/dev: install install/tools
+	git config --add remote.origin.fetch '^refs/heads/badges' # Exclude badges branch from fetching
 	git config core.hooksPath ${SCRIPTS_DIR}/hooks
 
 
