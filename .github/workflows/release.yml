@@ -125,7 +125,7 @@ jobs:
         env:
           VERSION: ${{ needs.version.outputs.version }}
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          images: ${{ env.REGISTRY }}/${{ matrix.image }}
           tags: |
             type=semver,pattern={{raw}},value=${{ env.VERSION }}
             type=semver,pattern={{version}},value=${{ env.VERSION }}
@@ -151,6 +151,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ github.repository }}
+          subject-name: ${{ env.REGISTRY }}/${{ matrix.image }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
