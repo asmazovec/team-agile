@@ -9,10 +9,13 @@ This project was started for:
 - Hobby/pet project. It's a place for my experiments outside my day job.
 - Education. I explore and practice Go for Web technologies there.
 
-## Install Release
+## Run Release versions
 
+Release services are available in GitHub containers registry [ghcr.io](https://ghcr.io/asmazovec/team-agile).
+
+### Primary HTTP REST server for agile board API
 ```bash
-docker
+$ docker run -p 8080:8080 ghcr.io/asmazovec/primary-server:latest
 ```
 
 ## Contribute
