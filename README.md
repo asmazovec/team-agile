@@ -11,7 +11,7 @@ This project was started for:
 
 ## Run Release versions
 
-Release services are available in GitHub containers registry [ghcr.io](https://ghcr.io/asmazovec/team-agile).
+Release services are available in GitHub containers registry [ghcr.io](https://ghcr.io/asmazovec/).
 
 ### Primary HTTP REST server for agile board API
 ```bash
